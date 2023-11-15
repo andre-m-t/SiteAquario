@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho do melhor grupo</title>
+    <!-- datatables -->
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+      <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+    <!-- style -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js')}}"></script>
+</head>
+<body>
+    <div class="hero_area">
+        <!-- header -->
+        <header class="header_section">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+    
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                  <ul class="navbar-nav  ">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="http://127.0.0.1:8000/projeto/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="http://127.0.0.1:8000/projeto/grupo"> Conheça o Grupo</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link" href="contact.html"> Entre em contato</a>
+                    </li> -->
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </header>
+        <!-- header -->
+        <!-- topo da pag -->
+        <section class=" slider_section position-relative">
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="container">
+                  <div class="col-lg-10 col-md-11 mx-auto">
+                    <div class="detail-box">
+                      <div>
+                        <h4>
+                          Projetos 5
+                        </h4>
+                        <h2>
+                            Sistema de Monitoramento de pH e Temperatura
+                        </h2>
+                        <p>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
+                        </p>
+                        <div class="">
+                          <a onclick="scrollToElement()">
+                            Tabela de Monitoramento
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </section>
+        <!-- topo da pag -->
+      </div>
+    
+    
+      <!-- table -->
+      <section class="us_section layout_padding">
+        <div id="tabelaData" class="container">
+            <div class="heading_container">
+                <h2>
+                    Dados
+                </h2>
+            </div>
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th data-sortable="true">Id</th>
+                        <th>Valor de pH</th>
+                        <th>Temperatura (Celsius)</th>
+                        <th>Data e Hora</th> <!-- Substitua "Coluna 4" pelo nome real da quarta coluna -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in resultados %}
+                    <tr>
+                        <td>{{ linha[0] }}</td>
+                        <td>{{ linha[1] }}</td>
+                        <td>{{ linha[2] }}</td>
+                        <td>{{ linha[3] }}</td> <!-- Adapte o índice para corresponder à quarta coluna no seu banco de dados -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Valor de pH</th>
+                        <th>Valor de pH</th>
+                        <th>Temperatura (Celsius)</th>
+                        <th>Data e Hora</th> <!-- Substitua "Coluna 4" pelo nome real da quarta coluna -->
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+      <!-- table -->
+    
+      <!-- contatenos -->
+    
+      <section class="contact_section ">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 px-0">
+              <div class="img-box">
+                <img src="images/contact-img.jpg" alt="">
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-6">
+              <div class="form_container pr-0 pr-lg-5 mr-0 mr-lg-2">
+                <div class="heading_container">
+                  <h2>
+                    Fale Conosco
+                  </h2>
+                </div>
+                <form action="">
+                  <div>
+                    <input type="text" placeholder="Nome" />
+                  </div>
+                  <div>
+                    <input type="email" placeholder="Email" />
+                  </div>
+                  <div>
+                    <input type="text" placeholder="Phone" />
+                  </div>
+                  <div>
+                    <input type="text" class="message-box" placeholder="Mensagem" />
+                  </div>
+                  <div class="d-flex ">
+                    <button>
+                      Enviar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- end contact section -->
+    
+    <!-- footer -->
+    <!-- <footer class="container-fluid footer_section">
+        <p>
+          tmj tropa
+        </p>
+    </footer> -->
+    <!-- footer -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
+    <script>
+        function scrollToElement() {
+        var tabelaData = document.getElementById('tabelaData');
+        tabelaData.scrollIntoView({ behavior: 'smooth' });
+   }
+    </script> 
+</body>
+</html>
+ 
