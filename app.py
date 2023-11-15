@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 import mysql.connector
+import os
+
 
 app = Flask(__name__)
 
@@ -34,5 +36,5 @@ def projeto():
     return render_template('index.html', resultados=resultados)
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, port=port)
