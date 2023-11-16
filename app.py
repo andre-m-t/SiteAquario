@@ -2,7 +2,6 @@ from flask import Flask, render_template
 import mysql.connector
 import os
 
-
 app = Flask(__name__)
 
 # Configuração do banco de dados
@@ -13,6 +12,7 @@ db_config = {
     "database": "aquariogohan"
 }
 
+# Rota para a página inicial
 @app.route('/projeto/')
 def projeto():
     # Conectar ao banco de dados
@@ -35,6 +35,10 @@ def projeto():
     # Renderizar a página HTML com os resultados
     return render_template('index.html', resultados=resultados)
 
+# Garantir que o aplicativo só será executado se este script for o principal
 if __name__ == "__main__":
+    # Obter a porta do ambiente do Heroku ou usar 5000 como padrão
     port = int(os.environ.get("PORT", 5000))
+    
+    # Executar o aplicativo na porta especificada
     app.run(host="0.0.0.0", port=port)
