@@ -35,6 +35,11 @@ def projeto():
     # Renderizar a página HTML com os resultados
     return render_template('index.html', resultados=resultados)
 
+@app.route('/grupo/')
+def grupo():
+    # Lógica para a página do grupo
+    return render_template('grupo.html')
+
 # Garantir que o aplicativo só será executado se este script for o principal
 if __name__ == "__main__":
     # Obter a porta do ambiente do Heroku ou usar 5000 como padrão
