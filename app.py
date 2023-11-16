@@ -12,8 +12,13 @@ db_config = {
     "database": "aquariogohan"
 }
 
+@app.route('/grupo/')
+def grupo():
+    return render_template('grupo.html')
+
+
 # Rota para a página inicial
-@app.route('/projeto/')
+@app.route('/')
 def projeto():
     # Conectar ao banco de dados
     conexao = mysql.connector.connect(**db_config)
@@ -35,10 +40,6 @@ def projeto():
     # Renderizar a página HTML com os resultados
     return render_template('index.html', resultados=resultados)
 
-@app.route('/grupo/')
-def grupo():
-    # Lógica para a página do grupo
-    return render_template('grupo.html')
 
 # Garantir que o aplicativo só será executado se este script for o principal
 if __name__ == "__main__":
