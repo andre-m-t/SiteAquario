@@ -79,6 +79,16 @@
                         Tabela de Monitoramento
                       </a>
                     </div>
+                    <div class="">
+                      <a onclick="scrollToChart()">
+                        Gráfico de pH
+                      </a>
+                    </div>
+                    <div class="">
+                      <a onclick="scrollToChartTemp()">
+                        Gráfico de Temperatura
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -137,7 +147,7 @@
       <div id="tabelaData" class="container">
         <div class="heading_container">
           <h2>
-            Grafico
+            Grafico Ph
           </h2>
         </div>
         <canvas id="myChart" class="display">
@@ -148,19 +158,22 @@
             const ultimos13Valores = valoresArray.slice(-13);
             
             const labels = [ //BASE (X)
-              "00:00",
-              "01:00",
-              "02:00",
-              "03:00",
-              "04:00",
-              "05:00",
-              "06:00",
-              "07:00",
-              "08:00",
-              "09:00",
-              "10:00",
-              "11:00",
-              "12:00",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+              "",
+              "",
+              "",
+              
             ]
             const data = {
               labels,
@@ -169,7 +182,7 @@
                 label: "Progressão do Ph"
               }]
             }
-
+            
             const config = {
               type: "line",
               data,
@@ -177,8 +190,58 @@
                 responsive: true
               }
             };
-
+            
             const myChart = new Chart(ctx, config)
+            </script>
+        </canvas>
+        <div id="graficoTemp" class="heading_container">
+          <h2>
+            Grafico Temperatura
+          </h2>
+        </div>
+        <canvas id="myChart2" class="display">
+          <script>
+            const c = document.getElementById("myChart2")
+            const vl = "{{vl_temp}}"
+            const vlA = JSON.parse(vl); // Converta a string JSON para um array
+            const u13vl = vlA.slice(-13);
+            
+            const lbs = [ //BASE (X)
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+              
+            ]
+            const dt = {
+              labels : lbs,
+              datasets: [{
+                data: u13vl,
+                label: "Progressão da Temperatura"
+              }]
+            }
+            
+            const fig = {
+              type: "line",
+              data: dt,
+              options: {
+                responsive: true
+              }
+            };
+            
+            const myChart2 = new Chart(c, fig)
+
           </script>
         </canvas>
       </div>
@@ -207,6 +270,18 @@
     function scrollToElement() {
       var tabelaData = document.getElementById('tabelaData');
       tabelaData.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+  <script>
+    function scrollToChart() {
+      var graficoData = document.getElementById('graficoData');
+      graficoData.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+  <script>
+    function scrollToChartTemp() {
+      var graficoTemp = document.getElementById('graficoTemp');
+      graficoTemp.scrollIntoView({ behavior: 'smooth' });
     }
   </script>
 </body>

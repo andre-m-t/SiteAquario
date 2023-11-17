@@ -30,20 +30,19 @@ def projeto():
     # Recuperar os resultados da consulta
     resultados = cursor.fetchall()
     vl_ = []
-    horarios = []
+    temp = []
     for i in resultados:
         vl_.append(i[1])
-        data_hora_python = datetime.strptime(str(i[3]), "%Y-%m-%d %H:%M:%S")
-        hora_formatada = data_hora_python.strftime("%H:%M:%S")
-        horarios.append(str(hora_formatada))
+        temp.append(i[2])
 
     vl_ph = json.dumps(vl_)
+    vl_temp = json.dumps(temp)
     # Fechar o cursor e a conexão com o banco de dados
     cursor.close()
     conexao.close()
 
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, tempo = horarios)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
 
 @app.route('/grupo/')
 def grupo():
