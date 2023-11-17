@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 import mysql.connector
 import os
+import json
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -27,13 +29,21 @@ def projeto():
 
     # Recuperar os resultados da consulta
     resultados = cursor.fetchall()
+    vl_ = []
+    horarios = []
+    for i in resultados:
+        vl_.append(i[1])
+        data_hora_python = datetime.strptime(str(i[3]), "%Y-%m-%d %H:%M:%S")
+        hora_formatada = data_hora_python.strftime("%H:%M:%S")
+        horarios.append(str(hora_formatada))
 
+    vl_ph = json.dumps(vl_)
     # Fechar o cursor e a conexão com o banco de dados
     cursor.close()
     conexao.close()
 
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, tempo = horarios)
 
 @app.route('/grupo/')
 def grupo():
