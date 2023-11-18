@@ -112,10 +112,10 @@
       <table id="example" class="display" style="width:100%">
         <thead>
           <tr>
-            <th data-sortable="true">Id</th>
-            <th>Valor de pH</th>
-            <th>Temperatura (Celsius)</th>
-            <th>Data e Hora</th>
+            <th data-order="desc">Id <button class="toggle-order" data-column="0" data-order="desc"></button></th>
+            <th data-order="desc">Valor de pH <button class="toggle-order" data-column="1" data-order="desc"></button></th>
+            <th data-order="desc">Temperatura (Celsius) <button class="toggle-order" data-column="2" data-order="desc"></button></th>
+            <th data-order="desc">Data e Hora <button class="toggle-order" data-column="3" data-order="desc"></button></th>
           </tr>
         </thead>
         <tbody>
@@ -139,8 +139,37 @@
       </table>
     </div>
   </section>
+
+  <style>
+    .toggle-order {
+      border: none;
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      color: transparent;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () {
+      var table = $('#example').DataTable({
+        "order": [[0, "desc"]]
+      });
+
+      // Adicionar manipulador de clique ao botão para alternar a ordem
+      $('.toggle-order').on('click', function () {
+        var columnIndex = $(this).data('column');
+        var currentOrder = table.order()[0][1];
+        var newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+
+        table.order([columnIndex, newOrder]).draw();
+      });
+    });
+  </script>
   <!-- table -->
 
+  
   <!-- contatenos -->
 
   <section class="layout_padding us_section">
