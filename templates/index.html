@@ -169,7 +169,7 @@
   </script>
   <!-- table -->
 
-  
+
   <!-- contatenos -->
 
   <section class="layout_padding us_section">
@@ -182,47 +182,43 @@
         </div>
         <canvas id="myChart" class="display">
           <script>
-            const ctx = document.getElementById("myChart")
-            const valores = "{{vl_ph}}"
+            const ctx = document.getElementById("myChart");
+            const valores = "{{vl_ph}}";
             const valoresArray = JSON.parse(valores); // Converta a string JSON para um array
             const ultimos13Valores = valoresArray.slice(-13);
-            
-            const labels = [ //BASE (X)
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-              "",
-              "",
-              "",
-              
-            ]
+
+            // Ajuste os valores do eixo Y conforme necessário para aumentar a escala
+            const escalaMaxY = 10; // Defina o valor máximo desejado no eixo Y
+
+            const labels = Array.from({ length: 13 }, (_, index) => ""); //BASE (X)
             const data = {
               labels,
-              datasets: [{
-                data: ultimos13Valores,
-                label: "Progressão do Ph"
-              }]
-            }
-            
+              datasets: [
+                {
+                  data: ultimos13Valores,
+                  label: "Progressão do Ph",
+                  borderColor: 'blue', // Cor da linha do gráfico
+                  fill: false, // Não preencher a área sob o gráfico
+                },
+              ],
+            };
+
             const config = {
               type: "line",
               data,
               options: {
-                responsive: true
-              }
+                responsive: true,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    max: escalaMaxY,
+                  },
+                },
+              },
             };
-            
-            const myChart = new Chart(ctx, config)
-            </script>
+
+            const myChart = new Chart(ctx, config);
+          </script>
         </canvas>
         <div id="graficoTemp" class="heading_container">
           <h2>
@@ -231,48 +227,42 @@
         </div>
         <canvas id="myChart2" class="display">
           <script>
-            const c = document.getElementById("myChart2")
-            const vl = "{{vl_temp}}"
+            const c = document.getElementById("myChart2");
+            const vl = "{{vl_temp}}";
             const vlA = JSON.parse(vl); // Converta a string JSON para um array
             const u13vl = vlA.slice(-13);
-            
-            const lbs = [ //BASE (X)
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-              
-            ]
+          
+            // Determine dinamicamente o valor máximo para a escala no eixo Y
+            const escalaMaxYTemp = Math.max(...u13vl) + 5; // Adicione uma folga para melhor visualização
+          
+            const lbs = Array.from({ length: 13 }, (_, index) => ""); //BASE (X)
             const dt = {
-              labels : lbs,
-              datasets: [{
-                data: u13vl,
-                label: "Progressão da Temperatura", 
-                borderColor: 'red',
-              }]
-            }
-            
+              labels: lbs,
+              datasets: [
+                {
+                  data: u13vl,
+                  label: "Progressão da Temperatura",
+                  borderColor: 'red',
+                  fill: false,
+                },
+              ],
+            };
+          
             const fig = {
               type: "line",
               data: dt,
               options: {
-                responsive: true
-              }
+                responsive: true,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    max: escalaMaxYTemp,
+                  },
+                },
+              },
             };
-            
-            const myChart2 = new Chart(c, fig)
-
+          
+            const myChart2 = new Chart(c, fig);
           </script>
         </canvas>
       </div>
