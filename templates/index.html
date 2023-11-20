@@ -108,9 +108,12 @@
         <thead>
           <tr>
             <th data-order="desc">Id <button class="toggle-order" data-column="0" data-order="desc"></button></th>
-            <th data-order="desc">Valor de pH <button class="toggle-order" data-column="1" data-order="desc"></button></th>
-            <th data-order="desc">Temperatura (Celsius) <button class="toggle-order" data-column="2" data-order="desc"></button></th>
-            <th data-order="desc">Data e Hora <button class="toggle-order" data-column="3" data-order="desc"></button></th>
+            <th data-order="desc">Valor de pH <button class="toggle-order" data-column="1" data-order="desc"></button>
+            </th>
+            <th data-order="desc">Temperatura (Celsius) <button class="toggle-order" data-column="2"
+                data-order="desc"></button></th>
+            <th data-order="desc">Data e Hora <button class="toggle-order" data-column="3" data-order="desc"></button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -175,6 +178,11 @@
           </h2>
         </div>
         <br>
+        <div class="filter-container form_container">
+          <input type="date" name="" id="initialDate">
+          <input type="date" name="" id="finalDate">
+          <button onclick="funcaoFiltro()">Filtrar</button>
+        </div>
         <br>
         <canvas id="myChart" class="display">
           <script>
@@ -182,28 +190,28 @@
             const valores = "{{vl_ph}}"
             const valoresArray = JSON.parse(valores); // Converta a string JSON para um array
             const ultimos13Valores = valoresArray.slice(-13);
-            
+
             const vl = "{{vl_temp}}"
             const vlA = JSON.parse(vl); // Converta a string JSON para um array
             const u13vl = vlA.slice(-13);
 
             const labels = [ //BASE (X)
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
               "",
               "",
               "",
-              
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+
             ]
             const data = {
               labels,
@@ -215,9 +223,9 @@
                 data: u13vl,
                 label: "Progressão de Temperatura"
               }
-            ]
+              ]
             }
-            
+
             const config = {
               type: "line",
               data,
@@ -225,9 +233,19 @@
                 responsive: true
               }
             };
-            
+
             const myChart = new Chart(ctx, config)
-            </script>
+
+            function funcaoFiltro() {
+              const data = myChart.data.datasets;
+              // data[0].hidden = !data[0].hidden;
+              // data[1].hidden = !data[1].hidden;
+
+              data[0].data = [1, 2, 3, 4, 5, 6, 7, 8]
+              data[1].data = [9, 10, 11, 12, 13, 14, 15, 16, 17]
+              myChart.update(); // Atualiza o gráfico
+            }
+          </script>
         </canvas>
         <!-- <div class="heading_container">
           <h2>
@@ -281,7 +299,7 @@
 
           </script>
         </canvas> -->
-      </div> 
+      </div>
     </div>
     </div>
     </div>
@@ -356,4 +374,5 @@
     }
   </script>
 </body>
+
 </html>
