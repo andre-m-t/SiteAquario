@@ -171,101 +171,122 @@
 
 
   <!-- contatenos -->
-
   <section class="layout_padding us_section">
     <div class="container-fluid">
-      <div id="graficoPh" class="container">
+      <div id="tabelaData" class="container">
         <div class="heading_container">
           <h2>
-            Grafico Ph
+            Análise Gráfica
           </h2>
         </div>
+        <br>
+        <br>
         <canvas id="myChart" class="display">
           <script>
-            const ctx = document.getElementById("myChart");
-            const valores = "{{vl_ph}}";
+            const ctx = document.getElementById("myChart")
+            const valores = "{{vl_ph}}"
             const valoresArray = JSON.parse(valores); // Converta a string JSON para um array
             const ultimos13Valores = valoresArray.slice(-13);
+            
+            const vl = "{{vl_temp}}"
+            const vlA = JSON.parse(vl); // Converta a string JSON para um array
+            const u13vl = vlA.slice(-13);
 
-            // Ajuste os valores do eixo Y conforme necessário para aumentar a escala
-            const escalaMaxY = 10; // Defina o valor máximo desejado no eixo Y
-
-            const labels = Array.from({ length: 13 }, (_, index) => ""); //BASE (X)
+            const labels = [ //BASE (X)
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+              "",
+              "",
+              "",
+              
+            ]
             const data = {
               labels,
-              datasets: [
-                {
-                  data: ultimos13Valores,
-                  label: "Progressão do Ph",
-                  borderColor: 'blue', // Cor da linha do gráfico
-                  fill: false, // Não preencher a área sob o gráfico
-                },
-              ],
-            };
-
+              datasets: [{
+                data: ultimos13Valores,
+                label: "Progressão do Ph"
+              },
+              {
+                data: u13vl,
+                label: "Progressão de Temperatura"
+              }
+            ]
+            }
+            
             const config = {
               type: "line",
               data,
               options: {
-                responsive: true,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    max: escalaMaxY,
-                  },
-                },
-              },
+                responsive: true
+              }
             };
-
-            const myChart = new Chart(ctx, config);
-          </script>
+            
+            const myChart = new Chart(ctx, config)
+            </script>
         </canvas>
-        <div id="graficoTemp" class="heading_container">
+        <!-- <div class="heading_container">
           <h2>
             Grafico Temperatura
           </h2>
         </div>
         <canvas id="myChart2" class="display">
           <script>
-            const c = document.getElementById("myChart2");
-            const vl = "{{vl_temp}}";
+            const c = document.getElementById("myChart2")
+            const vl = "{{vl_temp}}"
             const vlA = JSON.parse(vl); // Converta a string JSON para um array
             const u13vl = vlA.slice(-13);
-          
-            // Determine dinamicamente o valor máximo para a escala no eixo Y
-            const escalaMaxYTemp = Math.max(...u13vl) + 5; // Adicione uma folga para melhor visualização
-          
-            const lbs = Array.from({ length: 13 }, (_, index) => ""); //BASE (X)
+            
+            const lbs = [ //BASE (X)
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+              
+            ]
             const dt = {
-              labels: lbs,
-              datasets: [
-                {
-                  data: u13vl,
-                  label: "Progressão da Temperatura",
-                  borderColor: 'red',
-                  fill: false,
-                },
-              ],
-            };
-          
+              labels : lbs,
+              datasets: [{
+                data: u13vl,
+                label: "Progressão da Temperatura",
+                borderColor: 'orange',
+                backgroundColor: 'orange'
+              }]
+            }
+            
             const fig = {
               type: "line",
               data: dt,
               options: {
-                responsive: true,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    max: escalaMaxYTemp,
-                  },
-                },
-              },
+                responsive: true
+              }
             };
-          
-            const myChart2 = new Chart(c, fig);
+            
+            const myChart2 = new Chart(c, fig)
+
           </script>
-        </canvas>
-      </div>
+        </canvas> -->
+      </div> 
     </div>
     </div>
     </div>
