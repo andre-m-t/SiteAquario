@@ -498,6 +498,11 @@ a:focus {
 .info_items a {
   position: relative;
 }
-
+.BotoesLinkaveis{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
 /* end footer section*/
 /*# sourceMappingURL=style.css.map */

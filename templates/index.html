@@ -75,19 +75,14 @@
                       Descubra a revolução na criação de aquários. Nosso projeto oferece um sistema de monitoramento de
                       pH e temperatura em tempo real, proporcionando um ambiente ideal para seus peixes e plantas.
                     </p>
-                    <div class="">
+                    <div class="BotoesLinkaveis">
                       <a onclick="scrollToElement()">
                         Tabela de Monitoramento
                       </a>
                     </div>
-                    <div class="">
+                    <div class="BotoesLinkaveis">
                       <a onclick="scrollToChart()">
-                        Gráfico de pH
-                      </a>
-                    </div>
-                    <div class="">
-                      <a onclick="scrollToChartTemp()">
-                        Gráfico de Temperatura
+                        Gráfico de Monitoramento
                       </a>
                     </div>
                   </div>
@@ -173,7 +168,7 @@
   <!-- contatenos -->
   <section class="layout_padding us_section">
     <div class="container-fluid">
-      <div id="tabelaData" class="container">
+      <div id="graficoData" class="container">
         <div class="heading_container">
           <h2>
             Análise Gráfica
@@ -316,14 +311,8 @@
   </script>
   <script>
     function scrollToChart() {
-      var graficoPh = document.getElementById('graficoPh');
+      var graficoPh = document.getElementById('graficoData');
       graficoPh.scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
-  <script>
-    function scrollToChartTemp() {
-      var graficoTemp = document.getElementById('graficoTemp');
-      graficoTemp.scrollIntoView({ behavior: 'smooth' });
     }
   </script>
 </body>
