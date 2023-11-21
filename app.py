@@ -51,8 +51,8 @@ def buscarPorData():
         dt_a = datetime.strptime(dtIni, '%Y-%m-%d')
         dt_b = datetime.strptime(dtFinal, '%Y-%m-%d')
     except ValueError:
-        dt_a = ""
-        dt_b = ""
+        dt_a = "2020-10-10"
+        dt_b = datetime.strptime(str(datetime.now().date()), '%Y-%m-%d')
     con = mysql.connector.connect(**db_config)
     cur = con.cursor()
     sql = f"SELECT * FROM Dados WHERE DATE(data) BETWEEN '{dt_a}' AND '{dt_b}'"
@@ -77,16 +77,14 @@ def buscarPorData():
         vl_temp = json.dumps(temp)
     # Conectar ao banco de dados
     conexao = mysql.connector.connect(**db_config)
-
     # Criar um objeto cursor para interagir com o banco de dados
     cursor = conexao.cursor()
-
     # Exemplo de consulta SELECT
     consulta = "SELECT * FROM Dados"
     cursor.execute(consulta)
-
     # Recuperar os resultados da consulta
     resultados = cursor.fetchall()
+
     
     return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
     
