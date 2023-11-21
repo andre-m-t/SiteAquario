@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import mysql.connector
 import os
 import json
@@ -75,18 +75,9 @@ def buscarPorData():
             temp.append(i[2])
         vl_ph = json.dumps(vl_)
         vl_temp = json.dumps(temp)
-    # Conectar ao banco de dados
-    conexao = mysql.connector.connect(**db_config)
-    # Criar um objeto cursor para interagir com o banco de dados
-    cursor = conexao.cursor()
-    # Exemplo de consulta SELECT
-    consulta = "SELECT * FROM Dados"
-    cursor.execute(consulta)
-    # Recuperar os resultados da consulta
-    resultados = cursor.fetchall()
 
     
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
+    return jsonify({'vl_ph':vl_ph , 'vl_temp':vl_temp})
     
 
 @app.route('/grupo/')

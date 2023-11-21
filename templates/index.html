@@ -178,11 +178,40 @@
           </h2>
         </div>
         <div class="filter-container form_container">
-          <form class="filter-container" action="/FiltroAtivo" method="post">
+          <form id="filterForm" class="filter-container" action="" method="post">
             <input class="filter-input" type="date" name="initialDate" id="initialDate">
             <input class="filter-input" type="date" name="finalDate" id="finalDate">
             <button class="filter-button" type="submit">Filtrar</button>
           </form>
+          <script>
+            $(document).ready(function(){
+              $("#filterForm").submit(function(event){
+                event.preventDefault();
+                var formData = {
+                  initialDate: $("#initialDate").val(),
+                  finalDate: $("#finalDate").val()
+                };
+                $.ajax({
+                  type: "POST",
+                  url:"/FiltroAtivo",
+                  data: formData,
+                  success: function(formData){
+                    const data = myChart.data.datasets;
+                    // data[0].hidden = !data[0].hidden;
+                    // data[1].hidden = !data[1].hidden;
+
+                    data[0].data = formData.vl_ph;
+                    data[1].data = formData.vl_temp;
+                    myChart.update(); // Atualiza o gráfico
+
+                  },
+                  error: function(error){
+                    console.log("Error",error)
+                  }
+                });
+              });
+            });
+          </script>
         </div>
         <canvas id="myChart" class="display">
           <script>
