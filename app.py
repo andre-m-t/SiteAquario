@@ -40,31 +40,22 @@ def projeto():
     # Fechar o cursor e a conexão com o banco de dados
     cursor.close()
     conexao.close()
-    # COLETANDO DADOS ATRAVES DO FILTRO 
-    # dt_a = request.form["initialDate"]
-    # dt_b = request.form["finalDate"]
-
-    dt_a = "2023-01-10"
-    dt_b = "2023-11-01"
-    # conversao
-    dt_a = datetime.strptime(dt_a, '%Y-%m-%d')
-    dt_b = datetime.strptime(dt_b, '%Y-%m-%d')
-    # pesquisa no banco
-    filtro = buscarPorData(dt_a, dt_b)
-    filter_ph = []
-    filter_temp = []
-    for j in filtro:
-        filter_ph.append[j[1]]
-        filter_temp.append[j[2]]
-    ph_f = json.dumps(filter_ph)
-    temp_f = json.dumps(filter_temp)
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp, ph_f = ph_f, temp_f=temp_f)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
 
-def buscarPorData(dtIni:datetime.date, dtFinal:datetime.date)->list:
+@app.route('/FiltroAtivo', methods=['POST'])
+def buscarPorData():
+    dtIni = request.form['initialDate']
+    dtFinal = request.form['finalDate']
+    try:
+        dt_a = datetime.strptime(dtIni, '%Y-%m-%d')
+        dt_b = datetime.strptime(dtFinal, '%Y-%m-%d')
+    except ValueError:
+        dt_a = ""
+        dt_b = ""
     con = mysql.connector.connect(**db_config)
     cur = con.cursor()
-    sql = f"SELECT * FROM Dados WHERE DATE(data) BETWEEN '{dtIni}' AND '{dtFinal}'"
+    sql = f"SELECT * FROM Dados WHERE DATE(data) BETWEEN '{dt_a}' AND '{dt_b}'"
     _rs = None
     try:
         cur.execute(sql)
@@ -74,7 +65,30 @@ def buscarPorData(dtIni:datetime.date, dtFinal:datetime.date)->list:
     except Exception as e:
         _rs = None
         print(e)
-    return _rs
+    vl_ph = []
+    vl_temp = []
+    if _rs != None:
+        vl_ = []
+        temp = []
+        for i in _rs:
+            vl_.append(i[1])
+            temp.append(i[2])
+        vl_ph = json.dumps(vl_)
+        vl_temp = json.dumps(temp)
+    # Conectar ao banco de dados
+    conexao = mysql.connector.connect(**db_config)
+
+    # Criar um objeto cursor para interagir com o banco de dados
+    cursor = conexao.cursor()
+
+    # Exemplo de consulta SELECT
+    consulta = "SELECT * FROM Dados"
+    cursor.execute(consulta)
+
+    # Recuperar os resultados da consulta
+    resultados = cursor.fetchall()
+    
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
     
 
 @app.route('/grupo/')

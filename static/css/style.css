@@ -512,8 +512,8 @@ a:focus {
   background-color: #2a2a2c;
   color: #ffffff;
   border:1px solid #000000;
-  width: 10%;
-  height: 10%;
+  width: 25%;
+  height: 100%;
   margin-left: 5px;
 }
 .filter-button{
