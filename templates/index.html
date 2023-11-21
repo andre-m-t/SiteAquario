@@ -177,13 +177,11 @@
             Análise Gráfica
           </h2>
         </div>
-        <br>
         <div class="filter-container form_container">
-          <input type="date" name="" id="initialDate">
-          <input type="date" name="" id="finalDate">
-          <button onclick="funcaoFiltro()">Filtrar</button>
+          <input class="filter-input" type="date" name="initialDate" id="initialDate">
+          <input class="filter-input" type="date" name="finalDate" id="finalDate">
+          <button class="filter-button" onclick="funcaoFiltro()">Filtrar</button>
         </div>
-        <br>
         <canvas id="myChart" class="display">
           <script>
             const ctx = document.getElementById("myChart")
@@ -194,6 +192,13 @@
             const vl = "{{vl_temp}}"
             const vlA = JSON.parse(vl); // Converta a string JSON para um array
             const u13vl = vlA.slice(-13);
+
+            const vlf_ph = "{{ph_f}}"
+            const _ph = JSON.parse(vlf_ph)
+
+            const vlf_temp = "{{temp_f}}"
+            const _temp = JSON.parse(vlf_temp)
+
 
             const labels = [ //BASE (X)
               "",

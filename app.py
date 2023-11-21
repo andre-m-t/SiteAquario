@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import mysql.connector
 import os
 import json
@@ -40,9 +40,42 @@ def projeto():
     # Fechar o cursor e a conexão com o banco de dados
     cursor.close()
     conexao.close()
+    # COLETANDO DADOS ATRAVES DO FILTRO 
+    # dt_a = request.form["initialDate"]
+    # dt_b = request.form["finalDate"]
 
+    dt_a = "2023-01-10"
+    dt_b = "2023-11-01"
+    # conversao
+    dt_a = datetime.strptime(dt_a, '%Y-%m-%d')
+    dt_b = datetime.strptime(dt_b, '%Y-%m-%d')
+    # pesquisa no banco
+    filtro = buscarPorData(dt_a, dt_b)
+    filter_ph = []
+    filter_temp = []
+    for j in filtro:
+        filter_ph.append[j[1]]
+        filter_temp.append[j[2]]
+    ph_f = json.dumps(filter_ph)
+    temp_f = json.dumps(filter_temp)
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp, ph_f = ph_f, temp_f=temp_f)
+
+def buscarPorData(dtIni:datetime.date, dtFinal:datetime.date)->list:
+    con = mysql.connector.connect(**db_config)
+    cur = con.cursor()
+    sql = f"SELECT * FROM Dados WHERE DATE(data) BETWEEN '{dtIni}' AND '{dtFinal}'"
+    _rs = None
+    try:
+        cur.execute(sql)
+        _rs = cur.fetchall()
+        cur.close()
+        con.close()
+    except Exception as e:
+        _rs = None
+        print(e)
+    return _rs
+    
 
 @app.route('/grupo/')
 def grupo():
