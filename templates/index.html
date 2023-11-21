@@ -199,9 +199,10 @@
                     const data = myChart.data.datasets;
                     // data[0].hidden = !data[0].hidden;
                     // data[1].hidden = !data[1].hidden;
-
-                    data[0].data = formData.vl_ph;
-                    data[1].data = formData.vl_temp;
+                    f_ph = JSON.parse(formData.vl_ph);
+                    f_temp = JSON.parse(formData.vl_temp);
+                    data[0].data = f_ph.slice(-13);
+                    data[1].data = f_temp.slice(-13);
                     myChart.update(); // Atualiza o gráfico
 
                   },
