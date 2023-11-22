@@ -63,11 +63,11 @@ def buscarPorData():
     try:
         cur.execute(sql)
         _rs = cur.fetchall()
-        cur.close()
-        con.close()
     except Exception as e:
         _rs = None
         print(e)
+    cur.close()
+    con.close()
     vl_ph = []
     vl_temp = []
     vl_label = []
