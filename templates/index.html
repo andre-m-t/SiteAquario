@@ -184,8 +184,8 @@
             <button class="filter-button" type="submit">Filtrar</button>
           </form>
           <script>
-            $(document).ready(function(){
-              $("#filterForm").submit(function(event){
+            $(document).ready(function () {
+              $("#filterForm").submit(function (event) {
                 event.preventDefault();
                 var formData = {
                   initialDate: $("#initialDate").val(),
@@ -193,21 +193,18 @@
                 };
                 $.ajax({
                   type: "POST",
-                  url:"/FiltroAtivo",
+                  url: "/FiltroAtivo",
                   data: formData,
-                  success: function(formData){
+                  success: function (formData) {
                     const data = myChart.data.datasets;
-                    // data[0].hidden = !data[0].hidden;
-                    // data[1].hidden = !data[1].hidden;
-                    f_ph = JSON.parse(formData.vl_ph);
-                    f_temp = JSON.parse(formData.vl_temp);
-                    data[0].data = f_ph.slice(-13);
-                    data[1].data = f_temp.slice(-13);
+                    data[0].data = JSON.parse(formData.vl_ph);
+                    data[1].data = JSON.parse(formData.vl_temp);
+                    myChart.data.labels = JSON.parse(formData.label);
                     myChart.update(); // Atualiza o gráfico
 
                   },
-                  error: function(error){
-                    console.log("Error",error)
+                  error: function (error) {
+                    console.log("Error", error)
                   }
                 });
               });
@@ -217,40 +214,37 @@
         <canvas id="myChart" class="display">
           <script>
             const ctx = document.getElementById("myChart")
-            const valores = "{{vl_ph}}"
-            const valoresArray = JSON.parse(valores); // Converta a string JSON para um array
-            const ultimos13Valores = valoresArray.slice(-13);
 
-            const vl = "{{vl_temp}}"
-            const vlA = JSON.parse(vl); // Converta a string JSON para um array
-            const u13vl = vlA.slice(-13);
+            const valor_ph = JSON.parse("{{vl_ph}}");// Converta a string JSON para um array e tira os ultimos 13
+            const valor_temp = JSON.parse("{{vl_temp}}");
+            // const labels = Array(13).fill(""); ARRAY DE TAMANHO 13 COM "" EM CADA 
 
-            const labels = [ //BASE (X)
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
+            // CONVERTENDO A STRING QUE ESTAVA DANDO PROBLEMA RECEBIDA DO FLASK PARA UM ARRAY DE STRINGS DE FORMA MANUAL
+            const labels = [];
+            var str = "";
+            const str_py = "{{label}}";
+            for (let i = 0; i < str_py.length; i++) {
+              if (str_py[i] !== " ") {
+                str += str_py[i];
+              } else {
+                // REMOVENOD 5 PRIMEIROS CARACTERES ESPECIAIS E OS 6 ULTIMOS
+                labels.push(str.substring(5).slice(0, -6))
+                // console.log(str.substring(5).slice(0, -6))
+                str = ""
+              }
+            }
+            // REMOVENDO UM CARACTERE INDESEJADO QUE NAO SEGUIA PADRAO DAS OUTRAS
+            labels[0] = labels[0].substring(1)
 
-            ]
+            // VOLTANDO AS CONFIGURAÇÕES DO GRÁFICO 
             const data = {
-              labels,
+              labels: labels,
               datasets: [{
-                data: ultimos13Valores,
+                data: valor_ph,
                 label: "Progressão do Ph"
               },
               {
-                data: u13vl,
+                data: valor_temp,
                 label: "Progressão de Temperatura"
               }
               ]
@@ -265,16 +259,7 @@
             };
 
             const myChart = new Chart(ctx, config)
-
-            // function funcaoFiltro() {
-            //   const data = myChart.data.datasets;
-            //   // data[0].hidden = !data[0].hidden;
-            //   // data[1].hidden = !data[1].hidden;
-
-            //   data[0].data = [1, 2, 3, 4, 5, 6, 7, 8]
-            //   data[1].data = [9, 10, 11, 12, 13, 14, 15, 16, 17]
-            //   myChart.update(); // Atualiza o gráfico
-            // }
+            
           </script>
         </canvas>
         <!-- <div class="heading_container">

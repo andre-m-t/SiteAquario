@@ -31,17 +31,20 @@ def projeto():
     resultados = cursor.fetchall()
     vl_ = []
     temp = []
+    lb = []
     for i in resultados:
         vl_.append(i[1])
         temp.append(i[2])
-
+        lb.append(i[3].isoformat())
+    
     vl_ph = json.dumps(vl_)
     vl_temp = json.dumps(temp)
+    vl_lb = json.dumps(lb)
     # Fechar o cursor e a conexão com o banco de dados
     cursor.close()
     conexao.close()
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp, label= vl_lb)
 
 @app.route('/FiltroAtivo', methods=['POST'])
 def buscarPorData():
@@ -67,17 +70,21 @@ def buscarPorData():
         print(e)
     vl_ph = []
     vl_temp = []
+    vl_label = []
     if _rs != None:
         vl_ = []
         temp = []
+        lb = []
+
         for i in _rs:
             vl_.append(i[1])
             temp.append(i[2])
+            lb.append(i[3].isoformat())
         vl_ph = json.dumps(vl_)
         vl_temp = json.dumps(temp)
-
+        vl_label = json.dumps(lb)
     
-    return jsonify({'vl_ph':vl_ph , 'vl_temp':vl_temp})
+    return jsonify({'vl_ph':vl_ph , 'vl_temp':vl_temp, 'label':vl_label})
     
 
 @app.route('/grupo/')
