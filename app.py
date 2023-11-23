@@ -48,11 +48,13 @@ def projeto():
 
 @app.route('/FiltroAtivo', methods=['POST'])
 def buscarPorData():
-    dtIni = request.form['initialDate']
-    dtFinal = request.form['finalDate']
     try:
-        dt_a = datetime.strptime(dtIni, '%Y-%m-%d')
-        dt_b = datetime.strptime(dtFinal, '%Y-%m-%d')
+        dt_a = datetime.strptime( request.form['initialDate'], '%Y-%m-%d')
+        dt_b = datetime.strptime(request.form['finalDate'], '%Y-%m-%d')
+        if dt_a > dt_b:
+            aux = dt_b
+            dt_b = dt_a
+            dt_a = aux
     except ValueError:
         dt_a = "2020-10-10"
         dt_b = datetime.strptime(str(datetime.now().date()), '%Y-%m-%d')
