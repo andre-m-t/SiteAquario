@@ -44,7 +44,22 @@ def projeto():
     cursor.close()
     conexao.close()
     # Renderizar a página HTML com os resultados
-    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp, label= vl_lb)
+    return render_template('index.html', resultados=resultados, vl_ph = vl_ph, vl_temp = vl_temp, label= vl_lb, temp_atual= resultados[len(resultados)-1][2], ph_atual=resultados[len(resultados)-1][1], response="")
+
+@app.route('/ControleTemperatura', methods=['POST'])
+def comunicacao_com_sistema():
+    set_point = request.form['set_point']
+    temperatura = request.form['tp_atual']
+    response = "Parado"
+    if temperatura > set_point:
+        response = "Resfriando"
+    if temperatura < set_point:
+        response = "Esquentando"
+    if temperatura == set_point:
+        response = "Parado"
+
+    return jsonify({"response":response})
+
 
 @app.route('/FiltroAtivo', methods=['POST'])
 def buscarPorData():

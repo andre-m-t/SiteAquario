@@ -85,6 +85,11 @@
                         Gráfico de Monitoramento
                       </a>
                     </div>
+                    <div class="BotoesLinkaveis">
+                      <a onclick="scrolltoControl()">
+                        Controle de Temperatura
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -214,7 +219,7 @@
         <canvas id="myChart" class="display">
           <script>
             const ctx = document.getElementById("myChart")
-
+            
             const valor_ph = JSON.parse("{{vl_ph}}");// Converta a string JSON para um array e tira os ultimos 13
             const valor_temp = JSON.parse("{{vl_temp}}");
             // const labels = Array(13).fill(""); ARRAY DE TAMANHO 13 COM "" EM CADA 
@@ -235,7 +240,7 @@
             }
             // REMOVENDO UM CARACTERE INDESEJADO QUE NAO SEGUIA PADRAO DAS OUTRAS
             labels[0] = labels[0].substring(1)
-
+            
             // VOLTANDO AS CONFIGURAÇÕES DO GRÁFICO 
             const data = {
               labels: labels,
@@ -260,7 +265,7 @@
 
             const myChart = new Chart(ctx, config)
             
-          </script>
+            </script>
         </canvas>
       </div>
     </div>
@@ -282,29 +287,62 @@
         <div class="col-lg-5 col-md-6">
           <div class="form_container pr-0 pr-lg-5 mr-0 mr-lg-2">
             <div class="heading_container">
-              <h2>
-                Fale Conosco
+              <h2 id="controleTempSection">
+                Controle de Temperatura
               </h2>
             </div>
-            <form action="">
+            <form id="controlForm" action="" method="post">
               <div>
-                <input type="text" placeholder="Nome" />
+                <br><br>
+                <tr>
+                  <td><h2>Temperatura atual:  {{temp_atual}}</h2></td>
+                </tr>          
               </div>
               <div>
-                <input type="email" placeholder="Email" />
+              
+                <tr>
+                  <td><h2>Acidez atual:  {{ph_atual}}</h2></td>
+                </tr> 
               </div>
               <div>
-                <input type="text" placeholder="Phone" />
+                <input id="setpoint" type="text" placeholder="Set Point: 25.10" />
               </div>
               <div>
-                <input type="text" class="message-box" placeholder="Mensagem" />
+                <br><br>
+                <p>Insira no campo acima o valor exatamente como esta sendo mostrado.</p>
+                <p>Controle apenas de TEMPERATURA!</p>
+                <span id="labelAcao">Status Controle: Parado</span>
               </div>
               <div class="d-flex ">
-                <button>
+                <button type="submit">
                   Enviar
                 </button>
               </div>
             </form>
+            <script>
+              $(document).ready(function () {
+                $("#controlForm").submit(function (event) {
+                  event.preventDefault();
+                  var formData = {
+                    tp_atual: "{{temp_atual}}",
+                    set_point: $("#setpoint").val()
+                  };
+                  $.ajax({
+                    type: "POST",
+                    url: "/ControleTemperatura",
+                    data: formData,
+                    success: function (formData) {
+                      var  label = document.getElementById("labelAcao");
+                      label.textContent =  "Status Controle: "+formData.response;
+                      scrolltoControl();
+                    },
+                    error: function (error) {
+                      console.log("Error", error)
+                    }
+                  });
+                });
+              });
+            </script>
           </div>
         </div>
       </div>
@@ -329,6 +367,10 @@
     function scrollToChart() {
       var graficoPh = document.getElementById('graficoData');
       graficoPh.scrollIntoView({ behavior: 'smooth' });
+    }
+    function scrolltoControl(){
+      var controle = document.getElementById('controleTempSection');
+      controle.scrollIntoView({ behavior: 'smooth' });
     }
   </script>
 </body>
