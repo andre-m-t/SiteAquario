@@ -2,9 +2,14 @@ from flask import Flask, render_template, request, jsonify
 import mysql.connector
 import os
 import json
+import random, time
 from datetime import datetime
 
 app = Flask(__name__)
+
+# variavel global para o cancelamento do processo
+processo = False
+
 
 # Configuração do banco de dados
 db_config = {
@@ -48,18 +53,59 @@ def projeto():
 
 @app.route('/ControleTemperatura', methods=['POST'])
 def comunicacao_com_sistema():
-    set_point = request.form['set_point']
-    temperatura = request.form['tp_atual']
-    response = "Parado"
+    try:
+        set_point = float(request.form['set_point'])
+        temperatura = float(request.form['tp_atual'])
+    except (ValueError, KeyError) as e:
+        return jsonify({"error": "Dados inválidos fornecidos."}), 400
+    global processo
+    processo = True
+    print("temp: ", temperatura, "\nSp: ", set_point)
+
     if temperatura > set_point:
-        response = "Resfriando"
-    if temperatura < set_point:
-        response = "Esquentando"
-    if temperatura == set_point:
-        response = "Parado"
+        atualiza_processo("Resfriando")
+        resfriando = True
+        while resfriando:
+            temperatura = buscar_temperatura_atual(20.0)
+            print("Resfriando... Tp atual:", temperatura)
+            if not processo:
+                return jsonify({"response": "ok"}), 200  # Use break para sair do loop
+            if temperatura <= set_point:
+                resfriando = False
+                atualiza_processo("Parado")
+                return jsonify({"response": "ok"}), 200  # Use break para sair do loop
 
-    return jsonify({"response":response})
+    elif temperatura < set_point:
+        atualiza_processo("Esquentando")
+        esquentando = True
+        while esquentando:
+            temperatura = buscar_temperatura_atual(20.0)
+            print("Esquentando... Tp atual:", temperatura)
+            if not processo:
+                return jsonify({"response": "ok"}), 200  # Use break para sair do loop
+            if temperatura >= set_point:  # Corrigido de <= para >=
+                esquentando = False
+                atualiza_processo("Parado")
+                return jsonify({"response": "ok"}), 200  # Use break para sair do loop
 
+    else:
+        atualiza_processo("Parado")
+
+    return jsonify({"response": "ok"}), 200
+
+def buscar_temperatura_atual(tp):
+    time.sleep(2)
+    tp += random.uniform(-10.5, 10.5)
+    return tp
+
+def atualiza_processo(acao:str):
+    pass
+@app.route('/CancelaProcesso', methods=['POST'])
+def interromper_processo():
+    global processo
+    processo = False
+    atualiza_processo("Parado")
+    return jsonify({"response": "Processo cancelado"}), 200
 
 @app.route('/FiltroAtivo', methods=['POST'])
 def buscarPorData():

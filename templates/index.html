@@ -311,11 +311,18 @@
                 <br><br>
                 <p>Insira no campo acima o valor exatamente como esta sendo mostrado.</p>
                 <p>Controle apenas de TEMPERATURA!</p>
-                <span id="labelAcao">Status Controle: Parado</span>
+                <span id="labelAcao" style="color: white;" >Status Controle: Parado</span>
               </div>
               <div class="d-flex ">
                 <button type="submit">
-                  Enviar
+                  Iniciar Controle
+                </button>
+              </div>
+            </form>
+            <form id="cancelForm" action="" method="post">
+              <div class="d-flex ">
+                <button type="submit">
+                  Parar  Controle
                 </button>
               </div>
             </form>
@@ -323,18 +330,58 @@
               $(document).ready(function () {
                 $("#controlForm").submit(function (event) {
                   event.preventDefault();
+                  
                   var formData = {
                     tp_atual: "{{temp_atual}}",
                     set_point: $("#setpoint").val()
                   };
+                  if(formData.tp_atual >formData.set_point){
+                    let  label = document.getElementById("labelAcao");
+                    label.textContent =  "Status Controle: Resfriando";
+                    label.style.color = "cyan";
+                  }
+                  if(formData.tp_atual < formData.set_point){
+                    let  label = document.getElementById("labelAcao");
+                    label.textContent =  "Status Controle: Esquentando";
+                    label.style.color = "yellow";
+                  }
+                  if(formData.tp_atual == formData.set_point){
+                    let  label = document.getElementById("labelAcao");
+                    label.textContent =  "Status Controle: Parado";
+                  }
+                  var controle = document.getElementById('controleTempSection');
+                  controle.scrollIntoView({ behavior: 'auto' });
                   $.ajax({
                     type: "POST",
                     url: "/ControleTemperatura",
                     data: formData,
-                    success: function (formData) {
+                    success: function (response) {
+                      console.log(response)
                       var  label = document.getElementById("labelAcao");
-                      label.textContent =  "Status Controle: "+formData.response;
-                      scrolltoControl();
+                      label.textContent =  "Status Controle: Parado";
+                      label.style.color = "white";
+                      window.location.reload();
+                    },
+                    error: function (error) {
+                      console.log("Error", error)
+                    }
+                  });
+                });
+              });
+            </script>
+            <script>
+              $(document).ready(function () {
+                $("#cancelForm").submit(function (event) {
+                  event.preventDefault();
+                  $.ajax({
+                    type: "POST",
+                    url: "/CancelaProcesso",
+                    success: function (response) {
+                      console.log(response)
+                      var  label = document.getElementById("labelAcao");
+                      label.textContent =  "Status Controle: Processo cancelado";
+                      label.style.color = "red";
+                      window.location.reload();
                     },
                     error: function (error) {
                       console.log("Error", error)
