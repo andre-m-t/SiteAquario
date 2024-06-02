@@ -99,7 +99,7 @@ def comunicacao_com_sistema():
 
 def buscar_temperatura_atual():
     # Query de consulta para buscar ultima temperatura
-    query = "SELECT valor_temperatura from aquariogohan.Dados WHERE id = (SELECT max(id) from aquariogohan.Dados);"
+    query = "SELECT valor_temperatura from aquariogohan.Dados WHERE data = (SELECT max(data) from aquariogohan.Dados);"
     # Conectar ao banco de dados
     conexao = mysql.connector.connect(**db_config)
 
@@ -116,7 +116,7 @@ def buscar_temperatura_atual():
     # time.sleep(2)
 
     # ajuste manual para teste com projeto desligado
-    temp += random.uniform(-10.5, 10.5)
+    # temp += random.uniform(-10.5, 10.5)
 
     return temp
 
